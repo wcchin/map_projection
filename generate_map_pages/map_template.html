@@ -50,8 +50,11 @@
     {{ content }}
   </div>
   <div class="container">
-    <div class="row" style="position: fixed; bottom: 0;">
-      <p style="font-size: small; text-align:right">2024 <a href="https://wcchin.github.io/">Benny Chin</a></p>
+    <div class="row" style="position: fixed; bottom: 0; left: 20px;">
+      <p class="footnote">2024 <a href="https://wcchin.github.io/">Benny Chin</a> | Data source: <a href="https://www.naturalearthdata.com/">Natural Earth</a> | Projection info: <a href="https://proj.org/en/5.2/operations/projections/index.html">PROJ.org</a></p>
+    </div>
+    <div class="row" style="position: fixed; bottom: 0; right: 20px;">
+      <p class="proj4_note"><b>PROJ4 String: </b><span id="proj4_str">{{ first_proj4 }}</span></p>
     </div>
   </div>
 
@@ -59,6 +62,12 @@
   <script id="svg" src="https://cdn.jsdelivr.net/kute.js/1.5.5/kute-svg.min.js"></script>
   
   <script>
+    var proj4_dict = {
+      {% for k, v in projs.items() %}
+      "{{ k }}": "{{ v }}",  
+      {% endfor %}
+    };
+
     var current = "{{ first_title }}";
     var current2 = current.replaceAll(" ", "_");
     var elements = document.getElementsByClassName(current2+"-land");
@@ -69,14 +78,14 @@
       let pa = elements[i].firstElementChild;
       let pa_id = pa.id;
       let pa_id2 = pa_id;
-      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1500}).start();
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
       morphs0.push(morph);
     }
     for (var i=0; i<elements_b.length; i++) {
       let pa = elements_b[i].firstElementChild;
       let pa_id = pa.id;
       let pa_id2 = pa_id;
-      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1500}).start();
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
       morphs0.push(morph);
     }
   function initial_proj() {
@@ -89,6 +98,7 @@
       all_buts[i].classList.remove("button-on");
     }
     document.getElementById('but-'+current2).classList.add("button-on");
+    document.getElementById('proj4_str').textContent = proj4_dict["{{ first_title }}"];
   }
   function run(proj) {
     let proj2 = proj.replaceAll(" ", "_");
@@ -97,7 +107,7 @@
       let pa = elements[i].firstElementChild;
       let pa_id = pa.id;
       let pa_id2 = pa_id.replace(current2, proj2);
-      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1500}).start();
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
       morphs.push(morph);
     }
     for (var i=0; i<elements_b.length; i++) {
@@ -105,7 +115,7 @@
       let pa_id = pa.id;
       let pa_id2 = pa_id.replace(current2, proj2);
       //console.log(pa_id2)
-      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1500}).start();
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
       morphs.push(morph);
     }
     
@@ -118,6 +128,7 @@
       all_buts[i].classList.remove("button-on");
     }
     document.getElementById('but-'+proj2).classList.add("button-on");
+    document.getElementById('proj4_str').textContent = proj4_dict[proj];
   }
   </script>
 <!-- End Document
