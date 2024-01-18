@@ -6,9 +6,19 @@ body {
 }
 
 #map-title {
-    text-align: center;
-    font-weight: bold;
+  text-align: center;
+  font-weight: bold;
 }
+
+.footnote {
+  font-size: small;
+}
+
+#proj4_str {
+  font-weight: 300;
+  text-align: right;
+}
+
 .button,
 button,
 input[type="submit"],
