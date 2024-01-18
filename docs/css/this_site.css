@@ -7,7 +7,7 @@ body {
 
 #map-title {
   text-align: center;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .footnote {
@@ -30,7 +30,7 @@ input[type="button"] {
   color: var(--ctp-latte-text);
   text-align: center;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 38px;
   letter-spacing: .1rem;
   text-transform: none;
@@ -63,7 +63,8 @@ input[type="reset"].button-on,
 input[type="button"].button-on {
     color: var(--ctp-frappe-text);
     background-color: var(--ctp-frappe-base);
-    text-transform: uppercase;
+    text-transform: none;
+    font-weight: 700;
     border-color: var(--ctp-frappe-lavender); }
 .button.button-on:hover,
 button.button-on:hover,
