@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Map Projections</title>
+  <meta name="description" content="About map projection">
+  <meta name="author" content="Benny">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!--<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/this_site.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="manifest" href="images/site.webmanifest">
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  ––––––––––––––––––––––––––––––––––––––––––––––––––
+  <div class="container">
+  </div> -->
+    <div class="row">
+      <h1 id="map-title">{{ first_title }} Projection</h1>
+    </div>
+    <div class="row">
+      <button class="button button-on" id="but-{{ first_title.replace(' ', '_') }}" onclick="initial_proj()">{{ first_title }}</button>
+      {% for my_proj in projections_collection %}
+      <button class="button" id="but-{{ my_proj.replace(' ', '_') }}" onclick="run('{{ my_proj }}')">{{ my_proj }}</button>
+      {% endfor %}
+    </div>
+  <div style="width: 100%; height: 90vh; position: fixed; top: 10%; z-index: -1;">
+    {{ content }}
+  </div>
+  <div class="container">
+    <div class="row" style="position: fixed; bottom: 0; left: 20px;">
+      <p class="footnote">2024 <a href="https://wcchin.github.io/">Benny Chin</a> | Data source: <a href="https://www.naturalearthdata.com/">Natural Earth</a> | Projection info: <a href="https://proj.org/en/5.2/operations/projections/index.html">PROJ.org</a></p>
+    </div>
+    <div class="row" style="position: fixed; bottom: 0; right: 20px;">
+      <p class="proj4_note"><b>PROJ4 String: </b><span id="proj4_str">{{ first_proj4 }}</span></p>
+    </div>
+  </div>
+
+  <script id="core" src="https://cdn.jsdelivr.net/kute.js/1.5.5/kute.min.js"></script>
+  <script id="svg" src="https://cdn.jsdelivr.net/kute.js/1.5.5/kute-svg.min.js"></script>
+  
+  <script>
+    var proj4_dict = {
+      {% for k, v in projs.items() %}
+      "{{ k }}": "{{ v }}",  
+      {% endfor %}
+    };
+
+    var current = "{{ first_title }}";
+    var current2 = current.replaceAll(" ", "_");
+    var elements = document.getElementsByClassName(current2+"-land");
+    var elements_b = document.getElementsByClassName(current2+"-grid");
+    var elements_c = document.getElementsByClassName(current2+"-circle");
+    var all_buts = document.getElementsByClassName("button");
+    var morphs0 = [];
+    for (var i=0; i<elements.length; i++) {
+      let pa = elements[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id;
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs0.push(morph);
+    }
+    for (var i=0; i<elements_b.length; i++) {
+      let pa = elements_b[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id;
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs0.push(morph);
+    }
+    for (var i=0; i<elements_c.length; i++) {
+      let pa = elements_c[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id;
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs0.push(morph);
+    }
+  function initial_proj() {
+    for (var i=0; i<morphs0.length; i++) {
+      morph = morphs0[i];
+      morph.start();
+    }
+    document.getElementById('map-title').textContent = "{{ first_title }} Projection";
+    for (var i=0; i<all_buts.length; i++) {
+      all_buts[i].classList.remove("button-on");
+    }
+    document.getElementById('but-'+current2).classList.add("button-on");
+    document.getElementById('proj4_str').textContent = proj4_dict["{{ first_title }}"];
+  }
+  function run(proj) {
+    let proj2 = proj.replaceAll(" ", "_");
+    var morphs = [];
+    for (var i=0; i<elements.length; i++) {
+      let pa = elements[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id.replace(current2, proj2);
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs.push(morph);
+    }
+    for (var i=0; i<elements_b.length; i++) {
+      let pa = elements_b[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id.replace(current2, proj2);
+      //console.log(pa_id2)
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs.push(morph);
+    }
+    for (var i=0; i<elements_c.length; i++) {
+      let pa = elements_c[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id.replace(current2, proj2);
+      //console.log(pa_id2)
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs.push(morph);
+    }
+    
+    for (var i=0; i<morphs.length; i++) {
+      morph = morphs[i];
+      morph.start();
+    }
+    document.getElementById('map-title').textContent = proj + " Projection";
+    for (var i=0; i<all_buts.length; i++) {
+      all_buts[i].classList.remove("button-on");
+    }
+    document.getElementById('but-'+proj2).classList.add("button-on");
+    document.getElementById('proj4_str').textContent = proj4_dict[proj];
+  }
+  </script>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
