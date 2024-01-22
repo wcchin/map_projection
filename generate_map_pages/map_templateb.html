@@ -49,7 +49,8 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="row" style="width: 80%; z-index: 30;">
-    <h1 id="map-title">{{ first_title }} Projection</h1>
+    <h1>Global Projection</h1>
+    <h2 id="map-title">{{ first_title }}</h2>
   </div>
   <div style="width: 80%; height: 100vh; position: fixed; top: 0em; z-index: -1;">
     {{ content }}
@@ -107,7 +108,7 @@
       morph = morphs0[i];
       morph.start();
     }
-    document.getElementById('map-title').textContent = "{{ first_title }} Projection";
+    document.getElementById('map-title').textContent = "{{ first_title }}";
     for (var i=0; i<all_buts.length; i++) {
       all_buts[i].classList.remove("proj-on");
     }
@@ -145,7 +146,7 @@
       morph = morphs[i];
       morph.start();
     }
-    document.getElementById('map-title').textContent = proj + " Projection";
+    document.getElementById('map-title').textContent = proj;
     for (var i=0; i<all_buts.length; i++) {
       all_buts[i].classList.remove("proj-on");
     }
