@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Map Projections</title>
+  <meta name="description" content="About map projection">
+  <meta name="author" content="Benny">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!--<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/this_site.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="manifest" href="images/site.webmanifest">
+
+</head>
+<body>
+
+  <!-- side nav column-->
+  <div id="mySidenav" class="sidenav" style="width:0;">
+    <span class="sidetitle"> Projection List </span>
+    <a onclick="initial_proj()" id="but-{{ first_title.replace(' ', '_') }}" class="proj proj-on">{{ first_title }}</a>
+    {% for my_proj in projections_collection %}
+    <a onclick="run('{{ my_proj }}')" id="but-{{ my_proj.replace(' ', '_') }}" class="proj">{{ my_proj }}</a>
+    {% endfor %}
+    </div>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+  <div class="row" style="width: 100%; z-index: 30;">
+    <h1 id="map-title"> Azimuthal Equidistant Projection </h1>
+  </div>
+
+  <div class="row">
+  <div class="six columns">
+    <h2>Reference point: </h2><h2 id="map-refpt">{{ first_title }}</h2>
+    <div style="width: 50%; height: 100vh; position: fixed; top: 0em; z-index: -1;">
+      {{ content }}
+    </div>
+    <div class="container">
+      <div class="row" style="position: fixed; bottom: 0; left: 20px;">
+        <p class="footnote">2024 <a href="https://wcchin.github.io/">Benny Chin</a> | Data source: <a href="https://www.naturalearthdata.com/">Natural Earth</a> | Projection info: <a href="https://proj.org/en/5.2/operations/projections/index.html">PROJ.org</a></p>
+      </div>
+      <div class="row" style="position: fixed; bottom: 1em; left: 20px; z-index: 30;">
+        <p class="proj4_note"><b>PROJ4 String: </b><span id="proj4_str">{{ first_proj4 }}</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="six columns">
+    <div  style="position:absolute; top:10%;">
+    <table class="u-full-width">
+      <tbody>
+        <th><td>0 EW</td><td>60 E</td><td>120 E</td><td>180 E</td><td>120 W</td><td>60 W</td></th>
+        {{ table_html }}
+      </tbody>
+    </table>
+    </div>
+  </div>
+  </div>
+
+  <script id="core" src="https://cdn.jsdelivr.net/kute.js/1.5.5/kute.min.js"></script>
+  <script id="svg" src="https://cdn.jsdelivr.net/kute.js/1.5.5/kute-svg.min.js"></script>
+  
+
+  <script>
+    var proj4_dict = {
+      {% for k, v in projs.items() %}
+      "{{ k }}": "{{ v }}",  
+      {% endfor %}
+    };
+
+    var current = "{{ first_title }}";
+    var current2 = current.replaceAll(" ", "_");
+    var elements = document.getElementsByClassName(current2+"-land");
+    var elements_b = document.getElementsByClassName(current2+"-grid");
+    var elements_c = document.getElementsByClassName(current2+"-circle");
+    var all_buts = document.getElementsByClassName("button");
+    var morphs0 = [];
+    for (var i=0; i<elements.length; i++) {
+      let pa = elements[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id;
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs0.push(morph);
+    }
+    for (var i=0; i<elements_b.length; i++) {
+      let pa = elements_b[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id;
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs0.push(morph);
+    }
+    for (var i=0; i<elements_c.length; i++) {
+      let pa = elements_c[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id;
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs0.push(morph);
+    }
+  function initial_proj() {
+    for (var i=0; i<morphs0.length; i++) {
+      morph = morphs0[i];
+      morph.start();
+    }
+    document.getElementById('map-refpt').textContent = "{{ first_title }}";
+    for (var i=0; i<all_buts.length; i++) {
+      all_buts[i].classList.remove("button-on");
+    }
+    document.getElementById('but-'+current2).classList.add("button-on");
+    document.getElementById('proj4_str').textContent = proj4_dict["{{ first_title }}"];
+  }
+  function run(proj) {
+    let proj2 = proj.replaceAll(" ", "_");
+    var morphs = [];
+    for (var i=0; i<elements.length; i++) {
+      let pa = elements[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id.replace(current2, proj2);
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs.push(morph);
+    }
+    for (var i=0; i<elements_b.length; i++) {
+      let pa = elements_b[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id.replace(current2, proj2);
+      //console.log(pa_id2)
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs.push(morph);
+    }
+    for (var i=0; i<elements_c.length; i++) {
+      let pa = elements_c[i].firstElementChild;
+      let pa_id = pa.id;
+      let pa_id2 = pa_id.replace(current2, proj2);
+      //console.log(pa_id2)
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      morphs.push(morph);
+    }
+    
+    for (var i=0; i<morphs.length; i++) {
+      morph = morphs[i];
+      morph.start();
+    }
+    document.getElementById('map-refpt').textContent = proj;
+    for (var i=0; i<all_buts.length; i++) {
+      all_buts[i].classList.remove("button-on");
+    }
+    document.getElementById('but-'+proj2).classList.add("button-on");
+    document.getElementById('proj4_str').textContent = proj4_dict[proj];
+  }
+  </script>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
