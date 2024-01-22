@@ -21,6 +21,18 @@ body {
   color: var(--ctp-mocha-crust);
 }
 
+a {
+  color: var(--ctp-latte-blue);
+}
+a:hover {
+  color: var(--ctp-latte-rosewater);
+  text-decoration: none;
+  font-weight: bold;
+}
+#pagetitle {
+  font-size: 18pt;
+}
+
 .button,
 button,
 input[type="submit"],
