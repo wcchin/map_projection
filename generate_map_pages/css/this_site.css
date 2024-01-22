@@ -8,6 +8,7 @@ body {
 #map-title {
   text-align: center;
   font-weight: 500;
+  color: var(--ctp-frappe-base);
 }
 
 .footnote {
@@ -16,7 +17,8 @@ body {
 
 #proj4_str {
   font-weight: 300;
-  text-align: right;
+  text-align: center;
+  color: var(--ctp-mocha-crust);
 }
 
 .button,
@@ -79,3 +81,55 @@ input[type="button"].button-on:focus {
     color: var(--ctp-mocha-text);
     background-color: var(--ctp-mocha-base);
     border-color: var(--ctp-mocha-lavender); }
+
+
+  
+ /* The side navigation menu */
+ .sidenav {
+  height: 95%; /* 100% Full-height */
+  width: 20%; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 999; /* Stay on top */
+  top: 0; /* Stay at the top */
+  right: 0;
+  background-color: var(--ctp-frappe-mantle); /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 30px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  opacity: 0.85;
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidetitle {
+  padding: 8px 8px 8px 32px;
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--ctp-frappe-text);
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: var(--ctp-mocha-text);
+  background-color: var(--ctp-mocha-mantle);
+  cursor: pointer;
+}
+
+.proj {
+  color: var(--ctp-frappe-subtext0);
+}
+
+.proj-on {
+  color: var(--ctp-mocha-crust);
+  background-color: var(--ctp-latte-overlay0);
+  font-weight: 700;
+}
