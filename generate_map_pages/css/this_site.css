@@ -145,3 +145,8 @@ input[type="button"].button-on:focus {
   background-color: var(--ctp-latte-overlay0);
   font-weight: 700;
 }
+
+th,
+td {
+  padding: 1px 1px;
+  text-align: center;}
