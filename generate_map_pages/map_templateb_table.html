@@ -94,8 +94,9 @@
     var current = "{{ first_title }}";
     var current2 = current.replaceAll(" ", "_");
     var elements = document.getElementsByClassName(current2+"-land");
-    var elements_b = document.getElementsByClassName(current2+"-grid");
+    //var elements_b = document.getElementsByClassName(current2+"-grid");
     var elements_c = document.getElementsByClassName(current2+"-circle");
+    //console.log(elements.length);
     var all_buts = document.getElementsByClassName("button");
     var morphs0 = [];
     for (var i=0; i<elements.length; i++) {
@@ -105,13 +106,14 @@
       var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
       morphs0.push(morph);
     }
+    /*
     for (var i=0; i<elements_b.length; i++) {
       let pa = elements_b[i].firstElementChild;
       let pa_id = pa.id;
       let pa_id2 = pa_id;
       var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
       morphs0.push(morph);
-    }
+    }*/
     for (var i=0; i<elements_c.length; i++) {
       let pa = elements_c[i].firstElementChild;
       let pa_id = pa.id;
@@ -134,21 +136,25 @@
   function run(proj) {
     let proj2 = proj.replaceAll(" ", "_");
     var morphs = [];
+    //console.log(elements.length);
     for (var i=0; i<elements.length; i++) {
       let pa = elements[i].firstElementChild;
       let pa_id = pa.id;
       let pa_id2 = pa_id.replace(current2, proj2);
+      //console.log(i, pa_id, pa_id2);
       var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
       morphs.push(morph);
     }
+    //console.log(morphs.length);
+    /*
     for (var i=0; i<elements_b.length; i++) {
       let pa = elements_b[i].firstElementChild;
       let pa_id = pa.id;
       let pa_id2 = pa_id.replace(current2, proj2);
       //console.log(pa_id2)
-      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000}).start();
+      var morph = KUTE.to('#'+pa_id, { path: '#'+pa_id2 }, {duration: 1000});
       morphs.push(morph);
-    }
+    }*/
     for (var i=0; i<elements_c.length; i++) {
       let pa = elements_c[i].firstElementChild;
       let pa_id = pa.id;
